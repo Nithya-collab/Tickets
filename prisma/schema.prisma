@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../Database/TicketBookingSystem.db"
+}
+
+model BookingDetails {
+  bookingDetailId Int       @id @default(autoincrement()) @map("booking_detail_id")
+  bookingId       Int       @map("booking_id")
+  ticketId        Int       @map("ticket_id")
+  quantity        Int
+  price           Decimal?
+  createdAt       DateTime? @default(now()) @map("created_at")
+  updatedAt       DateTime? @default(now()) @map("updated_at")
+  Bookings        Bookings  @relation(fields: [bookingId], references: [bookingId], onDelete: NoAction, onUpdate: NoAction)
+  Tickets         Tickets   @relation(fields: [ticketId], references: [ticketId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("bookingdetails")
+}
+
+model Bookings {
+  bookingId      Int              @id @default(autoincrement()) @map("booking_id")
+  userId         Int              @map("user_id")
+  eventId        Int              @map("event_id")
+  bookingDate    DateTime?        @default(now()) @map("booking_date")
+  totalAmount    Decimal?         @map("total_amount")
+  status         String?
+  createdAt      DateTime?        @default(now()) @map("created_at")
+  updatedAt      DateTime?        @default(now()) @map("updated_at")
+  BookingDetails BookingDetails[]
+  Users          Users            @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  Events         Events           @relation(fields: [eventId], references: [eventId], onDelete: NoAction, onUpdate: NoAction)
+  Payments       Payments[]
+
+  @@map("bookings")
+}
+
+model Categories {
+  categoryId      Int               @id @default(autoincrement()) @map("category_id")
+  categoryName    String            @map("category_name")
+  description     String?
+  createdAt       DateTime?         @default(now()) @map("created_at")
+  updatedAt       DateTime?         @default(now()) @map("updated_at")
+  EventCategories EventCategories[]
+  Tickets         Tickets[]
+
+  @@map("categories")
+}
+
+model EventCategories {
+  eventCategoryId Int        @id @default(autoincrement()) @map("event_category_id")
+  eventId         Int        @map("event_id")
+  categoryId      Int        @map("category_id")
+  createdAt       DateTime?  @default(now()) @map("created_at")
+  updatedAt       DateTime?  @default(now()) @map("updated_at")
+  Events          Events     @relation(fields: [eventId], references: [eventId], onDelete: NoAction, onUpdate: NoAction)
+  Categories      Categories @relation(fields: [categoryId], references: [categoryId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("eventcategories")
+}
+
+model Events {
+  eventId         Int               @id @default(autoincrement()) @map("event_id")
+  eventName       String            @map("event_name")
+  description     String?
+  startTime       DateTime          @map("start_time")
+  endTime         DateTime          @map("end_time")
+  createdAt       DateTime?         @default(now()) @map("created_at")
+  updatedAt       DateTime?         @default(now()) @map("updated_at")
+  organizerId     Int               @unique(map: "sqlite_autoindex_events_1") @map("organizer_id")
+  venueId         Int               @map("venue_id")
+  Bookings        Bookings[]
+  EventCategories EventCategories[]
+  Venues          Venues            @relation(fields: [venueId], references: [venueId], onDelete: NoAction, onUpdate: NoAction)
+  Users           Users             @relation(fields: [organizerId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  Tickets         Tickets[]
+
+  @@map("events")
+}
+
+model Payments {
+  paymentId     Int       @id @default(autoincrement()) @map("payment_id")
+  bookingId     Int       @map("booking_id")
+  paymentDate   DateTime? @default(now()) @map("payment_date")
+  amount        Decimal?
+  paymentMethod String?   @map("payment_method")
+  status        String?
+  createdAt     DateTime? @default(now()) @map("created_at")
+  updatedAt     DateTime? @default(now()) @map("updated_at")
+  Bookings      Bookings  @relation(fields: [bookingId], references: [bookingId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("payments")
+}
+
+model Scopes {
+  scopeId     Int       @id @default(autoincrement()) @map("scope_id")
+  scopeName   String    @map("scope_name")
+  description String?
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @default(now()) @map("updated_at")
+  Tickets     Tickets[]
+
+  @@map("scopes")
+}
+
+model Tickets {
+  ticketId       Int              @id @default(autoincrement()) @map("ticket_id")
+  eventId        Int              @map("event_id")
+  userId         Int?             @map("user_id")
+  categoryId     Int?             @map("category_id")
+  scopeId        Int?             @map("scope_id")
+  status         String?
+  price          Decimal?
+  createdAt      DateTime?        @default(now()) @map("created_at")
+  updatedAt      DateTime?        @default(now()) @map("updated_at")
+  BookingDetails BookingDetails[]
+  Events         Events           @relation(fields: [eventId], references: [eventId], onDelete: NoAction, onUpdate: NoAction)
+  Scopes         Scopes?          @relation(fields: [scopeId], references: [scopeId], onDelete: NoAction, onUpdate: NoAction)
+  Users          Users?           @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  Categories     Categories?      @relation(fields: [categoryId], references: [categoryId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("tickets")
+}
+
+model Users {
+  userId       Int        @id @default(autoincrement()) @map("user_id")
+  userName     String     @map("user_name")
+  email        String
+  passwordHash String     @map("password_hash")
+  firstName    String?    @map("first_name")
+  lastName     String?    @map("last_name")
+  userType     String     @map("user_type")
+  createdAt    DateTime?  @default(now()) @map("created_at")
+  updatedAt    DateTime?  @default(now()) @map("updated_at")
+  Bookings     Bookings[]
+  Events       Events?
+  Tickets      Tickets[]
+
+  @@map("users")
+}
+
+model Venues {
+  venueId     Int       @id @default(autoincrement()) @map("venue_id")
+  venueName   String    @map("venue_name")
+  address     String
+  city        String
+  state       String?
+  zipCode     String?   @map("zip_code")
+  country     String
+  capacity    Int?
+  description String?
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @default(now()) @map("updated_at")
+  Events      Events[]
+
+  @@map("venues")
+}
