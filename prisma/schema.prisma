@@ -70,7 +70,7 @@ model Event {
   endTime         DateTime          @map("end_time")
   createdAt       DateTime?         @default(now()) @map("created_at")
   updatedAt       DateTime?         @default(now()) @map("updated_at")
-  organizerId     Int               @unique(map: "sqlite_autoindex_events_1") @map("organizer_id")
+  organizerId     Int               @map("organizer_id")
   venueId         Int               @map("venue_id")
   bookings        Booking[]
   eventCategories EventCategory[]

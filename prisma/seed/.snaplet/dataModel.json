@@ -880,12 +880,6 @@
       ],
       "uniqueConstraints": [
         {
-          "name": "events_organizer_id_key",
-          "fields": [
-            "organizer_id"
-          ]
-        },
-        {
           "name": "events_pkey",
           "fields": [
             "event_id"
