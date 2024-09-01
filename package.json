@@ -8,14 +8,20 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "npx tsx prisma/seed/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^5.17.0",
     "bootstrap": "^5.3.3",
+    "dayjs": "^1.11.13",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@snaplet/copycat": "^5.0.0",
+    "@snaplet/seed": "^0.98.0",
     "@types/node": "22.1.0",
     "@types/react": "18.3.3",
     "eslint": "^8",
@@ -23,5 +29,8 @@
     "postcss": "^8",
     "prisma": "^5.17.0",
     "tailwindcss": "^3.4.1"
+  },
+  "@snaplet/seed": {
+    "config": "prisma\\seed\\seed.config.ts"
   }
 }
