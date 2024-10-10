@@ -19,7 +19,6 @@
 # misc
 .DS_Store
 *.pem
-# database.sqlite
 
 # debug
 npm-debug.log*
@@ -28,7 +27,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.env
 
 # vercel
 .vercel
