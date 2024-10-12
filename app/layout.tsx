@@ -42,6 +42,10 @@ const menus = [
     label: 'Contact',
     href: '/contact',
   },
+  {
+    label: 'Cpu Usage',
+    href: '/cpu',
+  },
 ];
 
 export default function RootLayout({

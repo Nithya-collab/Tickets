@@ -15,6 +15,7 @@
     "next": "14.2.15",
     "react": "^18",
     "react-dom": "^18",
+    "systeminformation": "^5.23.5",
     "tailwind-variants": "^0.2.1"
   },
   "devDependencies": {
