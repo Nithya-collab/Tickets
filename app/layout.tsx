@@ -1,3 +1,12 @@
+import menuData from '@/Data/MenuData';
+import {
+  NavigationMenuComponent,
+  NavigationMenuGroupComponent,
+  NavigationMenuLinkComponent,
+  NavigationMenuTriggerComponent,
+  NavigationMenuContentComponent,
+} from '@/components/NavigationMenu';
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -23,11 +32,31 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+         <header>
+              
+            <NavigationMenuComponent>
+              {menuData.map((group, index) => (
+                <NavigationMenuGroupComponent key={index}>
+                  <NavigationMenuTriggerComponent>{group.title}</NavigationMenuTriggerComponent>
+                  <NavigationMenuContentComponent>
+                    {group.links.map((link, linkIndex) => (
+                      <NavigationMenuLinkComponent href={link.href} key={linkIndex}>
+                        {link.label}
+                      </NavigationMenuLinkComponent>
+                    ))}
+                  </NavigationMenuContentComponent>
+                </NavigationMenuGroupComponent>
+              ))}
+            </NavigationMenuComponent>
+        
+         </header>
+
         {children}
       </body>
     </html>

@@ -46,10 +46,11 @@ const NavigationMenuLinkComponent = ({ href, children }: { href: string; childre
 // Trigger Component (dropdown)
 const NavigationMenuTriggerComponent = ({ children }: { children: React.ReactNode }) => {
   return (
-    <NavigationMenu.Trigger className={cx(variants.trigger)}>
-      {children}
-      {/* You can add the dropdown icon here */}
-      <span className="ml-2">▼</span>
+      <NavigationMenu.Trigger asChild>
+        <div className={cx(variants.trigger)}>
+          {children}
+          <span className="ml-2">▼</span> {/* Dropdown icon */}
+        </div>
     </NavigationMenu.Trigger>
   );
 };
